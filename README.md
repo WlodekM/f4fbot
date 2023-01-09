@@ -11,4 +11,3 @@ Python 3
 
 ## To-do list
 - Better code
-- Support for different retrieval algorithms
