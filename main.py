@@ -1,4 +1,4 @@
-import scratchclient,json,math,time,equests.exceptions
+import scratchclient,json,math,time,requests.exceptions,pathlib,os
 title="""   _____                 __       __       ________ __  ______   __          __
   / ___/______________ _/ /______/ /_     / ____/ // / / ____/  / /_  ____  / /_
   \__ \/ ___/ ___/ __ `/ __/ ___/ __ \   / /_  / // /_/ /_     / __ \/ __ \/ __/
@@ -11,8 +11,23 @@ I don't take responsiblity if you get banned for using this."""
 
 def start():
     print("Starting...")
-    config = open("C:\ScratchF4FBot-master\config.json", "r")
-    config_loaded = json.loads(config.read())
+    cnfig = pathlib.Path(__file__).parent.resolve()
+    cnfig = str(cnfig)+"\config.json"
+    cnfig = os.path.normpath(cnfig)
+    print("Config:",cnfig)
+    try:
+    
+        config = open(cnfig, "r")
+        config_loaded = json.loads(config.read())
+    
+    except:
+
+        print("Config.json not found. Put it in the folder with main.py")
+        cnfig = os.path.normpath(input("Path to config.json:"))
+        config = open(cnfig, "r")
+        config_loaded = json.loads(config.read())
+
+        pass
 
     times = int(config_loaded["times"])
 
