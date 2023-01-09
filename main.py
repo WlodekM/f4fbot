@@ -1,78 +1,55 @@
+import scratchclient,json,math,time,equests.exceptions
+title="""   _____                 __       __       ________ __  ______   __          __
+  / ___/______________ _/ /______/ /_     / ____/ // / / ____/  / /_  ____  / /_
+  \__ \/ ___/ ___/ __ `/ __/ ___/ __ \   / /_  / // /_/ /_     / __ \/ __ \/ __/
+ ___/ / /__/ /  / /_/ / /_/ /__/ / / /  / __/ /__  __/ __/    / /_/ / /_/ / /_ 
+/____/\___/_/   \__,_/\__/\___/_/ /_/  /_/      /_/ /_/      /_.___/\____/\__/
 
+--------------------------------------------------------------------------------
+You must be following at least one user who has at least a few followers to use this.
+I don't take responsiblity if you get banned for using this."""
 
-
-
-
-import requests.exceptions
-import scratchclient
-
-import json
-
-
-print("   _____                 __       __       ________ __  ______   __          __ ")
-print("  / ___/______________ _/ /______/ /_     / ____/ // / / ____/  / /_  ____  / /_")
-print("  \__ \/ ___/ ___/ __ `/ __/ ___/ __ \   / /_  / // /_/ /_     / __ \/ __ \/ __/")
-print(" ___/ / /__/ /  / /_/ / /_/ /__/ / / /  / __/ /__  __/ __/    / /_/ / /_/ / /_  ")
-print("/____/\___/_/   \__,_/\__/\___/_/ /_/  /_/      /_/ /_/      /_.___/\____/\__/  ")
-
-print("--------------------------------------------------------------------------------")
-print("You must be following at least one user who has at least a few followers to use this.")
-print("I don't take responsiblity if you get banned for using this.")
-
-
-def start(фм):
-    print(фм)
+def start():
+    print("Starting...")
     config = open("C:\ScratchF4FBot-master\config.json", "r")
-    import math
     config_loaded = json.loads(config.read())
 
     times = int(config_loaded["times"])
-    
-
 
     i = 0
     vartimeinterval = config_loaded["timeInterval"]
     username = config_loaded["userName"]
     password = config_loaded["password"]
 
-    setupmanual = input("Run w/ settings from config.json? ")
-    setupmanual = setupmanual.lower()
-
-    if setupmanual == "n" or setupmanual == "no" or setupmanual == "false" or setupmanual == "f":
-
+    if input("Run w/ settings from config.json? ").lower() in ("n","no","false","f"):
         times = int(round ( float ( input("How many people to follow: ") ) ) )
         vartimeinterval = float(input("Time interval:") )
         userpass = input("Use username and password from config.json? ")
         userpass = userpass.lower()
 
-        if userpass == "n" or userpass == "no" or userpass == "false" or userpass == "f":
+        if userpass in ("n","no","false","f"):
             username = input("Username: ")
             password = input("Password: ")
             pass
 
         pass
-    
+
     session = scratchclient.ScratchSession(username, password)
 
     dtimes = times
     times = times - 1
-    import time
 
     past = time.time()
 
     while i <= times:
         following = session.get_user(config_loaded["userName"]).get_following()
-
         for f in following:
-        
             try:
                 #Get followers of f
                 gotten = f.get_followers()
 
                 if len(gotten) > 0 and i <= times:
-
                     for g in gotten:
-
                         if not g.username == config_loaded["userName"] and i <= times:
 
                             #Time calculations
@@ -85,7 +62,6 @@ def start(фм):
                             i = i + 1
                             tsstr = str(ts)
                             tmstr = str(tm)
-                            
                             print(i,"/",dtimes)
                             print("Followed", g.username)
                             print("Time:", tsstr + "s", tmstr + "m")
@@ -93,19 +69,14 @@ def start(фм):
 
                             #Follow the user
                             g.follow()
-                            #Wait timeInterval from cofig seconds
+                            #Wait timeInterval from config seconds
                             time.sleep(vartimeinterval)
-            #error
-            except requests.exceptions.JSONDecodeError:
+            except requests.exceptions.JSONDecodeError: # An exception
                 pass
-    print("end")
-
+    print("End.")
     again = input("Run again? ")
     again = again.lower()
-    if again == "y" or again == "yes" or again == "true" or again == "t":
-
-        start("starting")
-
+    if again ("y","yes","true","t"):
+        start()
     pass
-start("starting")
-
+start()
